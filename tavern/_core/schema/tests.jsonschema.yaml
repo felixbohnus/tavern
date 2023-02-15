@@ -203,6 +203,9 @@ definitions:
     description: Expected MQTT response
 
     properties:
+      strict:
+        $ref: "#/definitions/strict_block"
+
       unexpected:
         type: boolean
         description: Receiving this message fails the test
