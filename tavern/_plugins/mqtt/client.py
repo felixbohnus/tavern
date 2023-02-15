@@ -476,9 +476,9 @@ class MQTTClient:
         """
         logger.debug("Subscribing to topic '%s'", topic)
 
+        (status, mid) = self._client.subscribe(topic, *args, **kwargs)
         with self._subscribe_lock:
-            (status, mid) = self._client.subscribe(topic, *args, **kwargs)
-
+            
             if status == 0:
                 sanitised = root_topic(topic)
                 self._subscription_mappings[sanitised] = mid
