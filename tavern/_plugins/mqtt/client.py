@@ -477,16 +477,16 @@ class MQTTClient:
         logger.debug("Subscribing to topic '%s'", topic)
 
         (status, mid) = self._client.subscribe(topic, *args, **kwargs)
-        with self._subscribe_lock:
             
-            if status == 0:
+        if status == 0:
+            with self._subscribe_lock:
                 sanitised = root_topic(topic)
                 self._subscription_mappings[sanitised] = mid
                 self._subscribed[mid] = _Subscription(topic)
-            else:
-                raise exceptions.MQTTError(
-                    "Error subscribing to '{}' (err code {})".format(topic, status)
-                )
+        else:
+            raise exceptions.MQTTError(
+                "Error subscribing to '{}' (err code {})".format(topic, status)
+            )
 
     def unsubscribe_all(self) -> None:
         """Unsubscribe from all topics"""
